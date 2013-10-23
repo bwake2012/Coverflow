@@ -216,7 +216,8 @@
 	return(theAttributes);
 	}
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
+                                 withScrollingVelocity:(CGPoint)velocity
     {
     CGPoint theTargetContentOffset = proposedContentOffset;
     if (self.snapToCells == YES)
