@@ -52,10 +52,21 @@
 
 @implementation CCoverflowCollectionViewLayout
 
+#pragma mark - accessor overrides
+
+- (CGFloat) centerOffset
+{
+    return ( (self.collectionView.bounds.size.width - self.cellSpacing) * 0.5f );
+}
+
+#pragma mark - class methods
+
 + (Class)layoutAttributesClass
     {
     return([CBetterCollectionViewLayoutAttributes class]);
     }
+
+#pragma mark - init
 
 - (id)init
     {
