@@ -39,7 +39,9 @@
 //#define WORH(axis, size) ((axis) ? (size.height) : (size.width))
 
 @interface CCoverflowCollectionViewLayout ()
+
 @property (readwrite, nonatomic, strong) NSIndexPath *currentIndexPath;
+@property (readwrite, nonatomic, strong) NSIndexPath *savedCenterIndexPath;
 
 @property (readwrite, nonatomic, assign) CGFloat centerOffset;
 @property (readwrite, nonatomic, assign) NSInteger cellCount;
@@ -124,9 +126,14 @@
     self.cellCount = [self.collectionView numberOfItemsInSection:0];
 	}
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)oldBounds
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
     {
-    return(YES);
+    if ( newBounds.size.width != self.collectionView.bounds.size.width )
+        {
+        self.savedCenterIndexPath = self.currentIndexPath;
+        }
+        
+    return( YES );
     }
 
 - (CGSize)collectionViewContentSize
@@ -235,6 +242,29 @@
         {
         theTargetContentOffset.x = roundf(theTargetContentOffset.x / self.cellSpacing) * self.cellSpacing;
         theTargetContentOffset.x = MIN(theTargetContentOffset.x, (self.cellCount - 1) * self.cellSpacing);
+        }
+    return(theTargetContentOffset);
+    }
+
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
+    {
+    CGPoint theTargetContentOffset = proposedContentOffset;
+
+    if (self.snapToCells == YES)
+        {
+        if ( self.savedCenterIndexPath )
+            {
+            CGFloat theRow = self.savedCenterIndexPath.row;
+            theTargetContentOffset.x =
+                MAX( 0, ( theRow + 0.5f ) * (self.cellSpacing) + self.centerOffset - self.collectionView.bounds.size.width / 2.0f );
+            self.currentIndexPath = self.savedCenterIndexPath;
+            self.savedCenterIndexPath = Nil;
+            }
+        else
+            {
+            theTargetContentOffset.x = roundf(theTargetContentOffset.x / self.cellSpacing) * self.cellSpacing;
+            theTargetContentOffset.x = MIN(theTargetContentOffset.x, (self.cellCount - 1) * self.cellSpacing);
+            }
         }
     return(theTargetContentOffset);
     }

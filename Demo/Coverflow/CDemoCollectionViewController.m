@@ -76,8 +76,10 @@
 
 - (void)updateTitle
 	{
-// Asking a collection view for indexPathForItem inside a scrollViewDidScroll: callback seems unreliable.
-//	NSIndexPath *theIndexPath = [self.collectionView indexPathForItemAtPoint:(CGPoint){ CGRectGetMidX(self.collectionView.frame) + self.collectionView.contentOffset.x, CGRectGetMidY(self.collectionView.frame) }];
+    // Asking a collection view for indexPathForItem inside a scrollViewDidScroll: callback seems unreliable.
+//    CGRect theBounds = self.collectionView.bounds;
+//    CGPoint center = CGPointMake( CGRectGetMidX( theBounds ), CGRectGetMidY( theBounds ) );
+//	NSIndexPath *theIndexPath = [self.collectionView indexPathForItemAtPoint:center];
 	NSIndexPath *theIndexPath = ((CCoverflowCollectionViewLayout *)self.collectionView.collectionViewLayout).currentIndexPath;
 	if (theIndexPath == NULL)
 		{
