@@ -66,7 +66,7 @@
 
 - (CGFloat) centerOffset
 {
-    return ( (self.collectionView.bounds.size.width - self.cellSpacing) * 0.5f );
+    return ( (WORH_(self.collectionView.bounds.size) - self.cellSpacing) * 0.5f );
 }
 
 #pragma mark - class methods
@@ -269,17 +269,15 @@
 
     if (self.snapToCells == YES)
         {
-#if FALSE
         if ( self.savedCenterIndexPath )
             {
             CGFloat theRow = self.savedCenterIndexPath.row;
             theTargetContentOffset.x =
-                MAX( 0, ( theRow + 0.5f ) * (self.cellSpacing) + self.centerOffset - self.collectionView.bounds.size.width / 2.0f );
+                MAX( 0, ( theRow + 0.5f ) * self.cellSpacing + self.centerOffset - WORH_( self.collectionView.bounds.size ) / 2.0f );
             self.currentIndexPath = self.savedCenterIndexPath;
             self.savedCenterIndexPath = Nil;
             }
         else
-#endif
             {
             theTargetContentOffset.x = roundf(XORY_(theTargetContentOffset) / self.cellSpacing) * self.cellSpacing;
             theTargetContentOffset.x = MIN(XORY_(theTargetContentOffset), (self.cellCount - 1) * self.cellSpacing);
